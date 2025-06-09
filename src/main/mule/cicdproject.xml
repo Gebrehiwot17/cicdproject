@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="1d4abd2a-56d4-4511-9c46-c215e4a01680" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<http:listener-config name="HTTP_Listener_config1" doc:name="HTTP Listener config" doc:id="dbd902d4-76f0-45fc-8dcf-1a3f8e71d555" >
+		<http:listener-connection host="0.0.0.0" port="8085" />
+	</http:listener-config>
+	<flow name="cicdprojectFlow" doc:id="9f4b2da2-697f-4c8e-8dcc-f18b443220ee" >
+		<http:listener doc:name="Listener" doc:id="809784e0-9958-4c88-b3b3-2c3667dd931e" config-ref="HTTP_Listener_config1" path="/cicd"/>
+		<set-variable value='#[attributes.queryParams.num1]' doc:name="Set Variable" doc:id="e3e7331a-825c-49cf-ad4f-b176c5d598d9" variableName="num1"/>
+		<set-variable value='#[attributes.queryParams.num2]' doc:name="Set Variable" doc:id="79bf034b-5daa-4cba-b1e8-179bcc8e393c" variableName="num2"/>
+		<ee:transform doc:name="Transform Message" doc:id="5b6d8ce4-f231-479d-8b58-958760dfc4b8" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	
+	"addition": vars.num1 as Number + vars.Num2 as Number
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="1d2fae77-96da-4da6-9c4d-72bc7518aa59" message='#[payload]'/>
+	</flow>
+</mule>
