@@ -46,7 +46,7 @@
 						<uri>https://anypoint.mulesoft.com</uri>
 						<provider>MC</provider>
 						<environment>${environment}</environment>
-						<target>${targetName}</target>
+						<target>sandbox</target>
 						<muleVersion>${muleVersion}</muleVersion>
 						<username>${user}</username>
 						<password>${pass}</password>
